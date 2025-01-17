@@ -47,8 +47,9 @@ const handleDelete = e => {
 // 좋아요 토글
 const handleLikesToggle = async e => {
   e.preventDefault();
-  await req('get', `likes`, {email, num}) ;
-  setMyLike
+  const ret = await req('get', `likes`, {email, num}) ;
+  setMyLike(!myLike);
+  setNote({...note, likesCnt:note.likesCnt + (ret.result ? -1 : 1)})
 }
 return note && (
   <div>
@@ -59,7 +60,7 @@ return note && (
     <p>{note.writer}</p>
     <p>{note.regDate}</p>
     <p>{note.modDate}</p>
-    <p><button>좋아요<span style={{color: 'red'}}>{myLike ? '♥' : '♡'}</span> {note.likesCnt}</button></p>
+    <p><button onClick={handleLikesToggle}>좋아요 <span style={{color: 'red'}}>{myLike ? '♥' : '♡'}</span> {note.likesCnt}</button></p>
 
     <div>
       <h3>attachs : {note.attachDtos && note.attachDtos.length}</h3>
